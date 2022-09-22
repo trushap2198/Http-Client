@@ -7,222 +7,176 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GET {
-    private static final String USER_AGENT = "Concordia-HTTP/1.0";
+  private static final String USER_AGENT = "Concordia-HTTP/1.0";
+  private static boolean isVerbose = false;
+  private static boolean writeToFile = false;
+  private static String url;
+  private static String fileName;
+  private static String server;
+  private static URI uri;
+  private static List<String> data;
+  private static String headerInfoKeyValue;
+  private static Socket socket;
 
-    public static void run(String[] argumentTokens, String input) {
-        boolean isVerbose = false;
-        List<String> data = Arrays.asList(input.split(" "));
-        boolean writeToFile = false;
-        String url = null;
-        String fileName = "";
-        try {
-
-            int URLlength = 0;
-            if (data.contains("-o")) {
-                URLlength = input.indexOf("-o") - 2;
-
-                fileName = input.substring(input.indexOf("-o") + 2);
-
-            } else
-                URLlength = input.length() - 1;
-
-
-            url = input.substring(input.indexOf("http://"), URLlength); // will output the url http://httpbin.org/get?course=networking&assignment=1
-
-        } catch (Exception e) {
-            System.out.println("Please enter a valid URL");
-            return;
-        }
-
-        URI uri = null;
-        String server = null;
-        try {
-            uri = new URI(url); //Constructs a URI object by parsing the specified string url
-            server = uri.getHost(); //Constructs a URI object by parsing the specified string , will return httpbin.org
-
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-
-        if (data.contains("-d") || data.contains("-f")) {
-            System.out.println("Arguments invalid please enter valid arguments");
-            return;
-        }
-
-        if (data.contains("-v"))
-            isVerbose = true;
-        if (data.contains("-o"))
-            writeToFile = true;
-        String headerInfoKeyValue = "";
-        List<String> headerInfoList = new ArrayList<>();
-
-        StringBuilder request = new StringBuilder();
-
-        if (data.contains("-h")) {
-            for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).equals("-h")) {
-                    headerInfoList.add(data.get(i + 1));
-                }
-            }
-
-            if (!headerInfoList.isEmpty()) {
-                for (String headerInfo : headerInfoList) {
-                    headerInfoKeyValue += headerInfo.split(":")[0] + ":" + headerInfo.split(":")[1] + Constants.NEWLINE;
-                }
-            }
-        }
-        headerInfoKeyValue += "User-Agent:" + USER_AGENT;
-
-        try {
-
-            Socket socket = new Socket(server, 80);
-
-            PrintStream out = new PrintStream(socket.getOutputStream()); //for sending the data to the stream , we can easily write text with methods like println().
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream())); //for reading from the socket stream in order to easily read text with methods like readLine()
-
-            String r = "GET " + url + " HTTP/1.0 ";
-            request.append(r);
-            request.append(Constants.NEWLINE);
-            request.append(headerInfoKeyValue);
-
-            out.println(request);
-
-            out.println();
-            String line = in.readLine();
-            String status = line;
-            StringBuilder output = new StringBuilder();
-            if (isVerbose) {
-                while (line != null) {
-                    line = in.readLine();
-
-                    if (writeToFile && line != null)
-                        output.append(line + Constants.NEWLINE);
-                    else if (line != null)
-                        System.out.println(line);
-
-                }
-            } else {
-
-                while (line != null) {
-                    if (line.startsWith("{") && line != null) {
-
-                        if (writeToFile && line != null)
-                            output.append(line + Constants.NEWLINE);
-                        else if (line != null)
-                            System.out.println(line);
-                        while (!line.startsWith("}") && line != null) {
-                            line = in.readLine();
-
-                            if (writeToFile && line != null)
-                                output.append(line + Constants.NEWLINE);
-                            else if (line != null)
-                                System.out.println(line);
-                        }
-                    }
-                    line = in.readLine();
-                }
-            }
-
-            if (writeToFile) {
-                try {
-
-                    String currentDir = System.getProperty("user.dir");
-
-                    String filePath = currentDir + "\\" + fileName;
-
-                    FileWriter fileWriter = new FileWriter(filePath, false);
-                    fileWriter.write(output.toString());
-                    fileWriter.close();
-                } catch (IOException e) {
-                    System.out.println("An error occurred.");
-                    e.printStackTrace();
-                }
-                System.out.println("Data written to File Successfully");
-            }
-            in.close();
-            out.close();
-            socket.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  public static void run(String[] argumentTokens, String input) throws IOException {
+    data = Arrays.asList(input.split(" "));
+    if (data.contains("-d") || data.contains("-f")) { //get cannot contain -d or -f
+      System.out.println("Arguments invalid please enter valid arguments");
+      return;
     }
+    parseInput(data);
 
-    private static void printVerboseAndRedirect(String[] argumentTokens, BufferedReader in,String line,String input,String url) throws IOException {
+       // for reading from the socket stream in order to easily
+      // read text with methods like readLine()
+      getResponse(url);
 
-        String location = null;
+  }
 
-        while (line != null) {
-            if (line != null) {
-                System.out.println(line);
-                if(line.contains("Location")) {
-                    location = line.substring(line.indexOf(" ") + 1);
-                    System.out.println(location);
-                }
-            }
+  public static void getResponse(String url) throws IOException {
+    socket = new Socket(server, 80);
+    PrintStream out = new PrintStream(socket.getOutputStream()); // for sending the data to the stream , we can easily write
+    // text with methods like println().
+    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    StringBuilder request = new StringBuilder();
+    String r = "GET " + url + " HTTP/1.0 ";
+    request.append(r);
+    request.append(Constants.NEWLINE);
+    request.append(headerInfoKeyValue);
+    System.out.println("Request looks " +  request);
+    out.println(request);
+    out.println();
+    String status = in.readLine();
+    String line = "";
+    System.out.println("Response is here:" + status + "done");
 
-            line = in.readLine();
-        }
-
-        System.out.println("------Redirecting-------");
-        String redirectInput =  input.replace(url,location);
-        run(argumentTokens,redirectInput);
+    if(status.split(" ")[1].startsWith("3")){
+      System.out.println("redirecting trusha");
+      printRedirect(in, out);
+      //System.exit(0);
 
     }
-
-    private void printDocument(boolean isVerbose, String line, boolean writeToFile, String fileName, BufferedReader in) throws IOException {
-
-        StringBuilder output = new StringBuilder();
-        if (isVerbose) {
-            while (line != null) {
-
-                if (writeToFile && line != null)
-                    output.append(line + Constants.NEWLINE);
-                else if (line != null)
-                    System.out.println(line);
-
-                line = in.readLine();
-            }
-        } else {
-
-            while (line != null) {
-                if (line.startsWith("{") && line != null) {
-
-                    if (writeToFile && line != null)
-                        output.append(line + Constants.NEWLINE);
-                    else if (line != null)
-                        System.out.println(line);
-                    while (!line.startsWith("}") && line != null) {
-                        line = in.readLine();
-
-                        if (writeToFile && line != null)
-                            output.append(line + Constants.NEWLINE);
-                        else if (line != null)
-                            System.out.println(line);
-                    }
-                }
-                line = in.readLine();
-            }
-        }
-
+    StringBuilder output = new StringBuilder();
+    if (isVerbose) {
+      while ((line = in.readLine()) != null) {
         if (writeToFile) {
-            try {
-
-                String currentDir = System.getProperty("user.dir");
-
-                String filePath = currentDir + "\\" + fileName;
-
-                FileWriter fileWriter = new FileWriter(filePath, false);
-                fileWriter.write(output.toString());
-                fileWriter.close();
-            } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-            }
-            System.out.println("Data written to File Successfully");
+          output.append(line + Constants.NEWLINE);
         }
+        else  {
+          System.out.println(line);
+        }
+        if (line.equals("}")){
+          break;
+        }
+      }
 
     }
+    else
+    {
+      boolean isJson = false;
+      while ((line = in.readLine()) != null) {
+        if (line.trim().equals("{")) {
+          isJson = true;
+        }
+        if (isJson) {
+          if (writeToFile) {
+            output.append(line + Constants.NEWLINE);
+          }
+          else {
+            System.out.println(line);
+          }
+          if (line.equals("}")) {
+            break;
+          }
+        }
+      }
 
+    }
+    if (writeToFile) {
+      writeOutputToFile(output);
+    }
+    in.close();
+    out.close();
+    socket.close();
+  }
+
+  private static void writeOutputToFile(StringBuilder output) {
+    try {
+      String currentDir = System.getProperty("user.dir");
+      String filePath = currentDir + "\\" + fileName;
+      FileWriter fileWriter = new FileWriter(filePath, false);
+      fileWriter.write(output.toString());
+      fileWriter.close();
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    System.out.println("Data written to File Successfully");
+  }
+
+  public static void parseInput(List<String> data){
+    try {
+
+      if (data.contains("-o")) {
+        fileName = data.get(data.size() - 1);
+        System.out.println("file name:" + fileName);
+        url = data.get(data.indexOf("-o") - 1).replaceAll("\\'", "");
+
+      } else {
+        url = data.get(data.size() - 1).replaceAll("\\'", "");
+      }
+      System.out.println("url:" + url);
+    } catch (Exception e) {
+      System.out.println("Please enter a valid URL");
+      return;
+    }
+    try {
+      uri = new URI(url); // Constructs a URI object by parsing the specified string url
+      server = uri.getHost(); // Constructs a URI object by parsing the specified string , will return
+      // httpbin.org
+
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
+    if (data.contains("-v")) isVerbose = true;
+    if (data.contains("-o")) writeToFile = true;
+    List<String> headerInfoList = new ArrayList<>();
+    if (data.contains("-h")) {
+      for (int i = 0; i < data.size(); i++) {
+        if (data.get(i).equals("-h")) {
+          headerInfoList.add(data.get(i + 1));
+        }
+      }
+      if (!headerInfoList.isEmpty()) {
+        for (String headerInfo : headerInfoList) {
+          headerInfoKeyValue +=
+                  headerInfo.split(":")[0] + ":" + headerInfo.split(":")[1] + Constants.NEWLINE;
+        }
+      }
+    }
+    headerInfoKeyValue += "User-Agent:" + USER_AGENT;
+  }
+
+  private static void printRedirect(BufferedReader in, PrintStream out) throws IOException {
+
+    String location = null;
+    String line = in.readLine();
+    while (line != null) {
+      if (line != null) {
+        System.out.println(line);
+        if (line.contains("Location")) {
+          location = line.substring(line.indexOf(" ") + 1);
+          System.out.println("new location: " + location);
+        }
+      }
+
+      line = in.readLine();
+    }
+
+    System.out.println("------Redirecting-------");
+    String new_url = "http://httpbin.org/get";
+    socket.close();
+    getResponse(new_url);
+  }
 
 }

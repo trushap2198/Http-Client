@@ -11,16 +11,16 @@ public class httpc {
 
         String input;
         do {
-            System.out.println("Enter Command or Enter q to exit from the system");
+            System.out.println("Enter Command or Enter \'exit\' to exit from the system");
             Scanner scan = new Scanner(System.in);
             input = scan.nextLine();
-            if (input.equals("q")) {
+            if (input.equals("exit")) {
                 return;
             } else {
                 httpLibrary.runCommand(input);
             }
             System.out.println("------------------------------------------------------------------------");
-        } while (!input.equals("q"));
+        } while (!input.equals("exit"));
     }
 
 }
