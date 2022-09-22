@@ -11,7 +11,7 @@ public class httpc {
 
         String input;
         do {
-            System.out.println("Enter Command or Enter \'exit\' to exit from the system");
+            System.out.println("Enter Command or Enter 'exit' to exit from the system");
             Scanner scan = new Scanner(System.in);
             input = scan.nextLine();
             if (input.equals("exit")) {
@@ -20,7 +20,7 @@ public class httpc {
                 httpLibrary.runCommand(input);
             }
             System.out.println("------------------------------------------------------------------------");
-        } while (!input.equals("exit"));
+        } while (true);
     }
 
 }

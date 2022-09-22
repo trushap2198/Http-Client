@@ -16,7 +16,7 @@ public class HTTPLibrary {
                 HELP.run(argumentTokens);
                 break;
             case "get":
-                GET.run(argumentTokens, input);
+                GET.run(input);
                 break;
             case "post":
                 POST.run(argumentTokens, input);
