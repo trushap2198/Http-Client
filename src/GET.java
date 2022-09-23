@@ -15,7 +15,7 @@ public class GET {
     private static String server;
     private static URI uri;
     private static List<String> data;
-    private static String headerInfoKeyValue;
+    private static String headerInfoKeyValue="";
     private static Socket socket;
 
     public static void run(String input) throws IOException
@@ -116,6 +116,7 @@ public class GET {
             e.printStackTrace();
           }
           System.out.println("Data written to File Successfully");
+          writeToFile = false;
     }
 
     public static void parseInput(List<String> data)

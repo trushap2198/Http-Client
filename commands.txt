@@ -1,0 +1,23 @@
+httpc get http://httpbin.org/status/418 //works
+httpc get -v -h xyz:ab-c http://httpbin.org/get?NAME=FallenJeremy //works
+httpc post -d userName=Apollo -v http://httpbin.org/post //issue
+httpc post -h Content-Type:application/json -h Keep-Alive:10 -h abc:def -v -f inputfFile.json http://httpbin.org/post //works
+httpc help get //works
+httpc post -d '{Lab:903}' -v http://httpbin.org/post //issue
+httpc post -v -f inputfFile.json http://httpbin.org/post  //works
+httpc post -v -h Content-Type:application/json -f inputfFile.json http://httpbin.org/post //works
+
+Should Fail:
+httpc post -d '{Lab:903}' -v -f inputFile.json http://httpbin.org/post
+httpc get -h abc:cde -d '{Lab:903}' -v -f inputfFile.json http://httpbin.org/post
+
+Bonus:
+
+//Error in redirection of post
+httpc get -v 'http://google.com'
+httpc get -v -h Content-Type:text/html -h Keep-Alive:10 -h Accept-language:en http://httpbin.org/redirect/7
+httpc post -v -h Content-Type:text/html -h Keep-Alive:10 -h Accept-language:en http://httpbin.org/redirect/7
+httpc get -v -h Content-Type:text/html -h abc:def -h Accept-language:en http://httpbin.org/get -o temp.txt
+httpc post -v -h Content-Type:text/html -h abc:def -h Accept-language:en http://httpbin.org/get -o temppost.txt
+httpc get -v -h Content-Type:text/html -h Keep-Alive:10 -h Accept-language:en http://httpbin.org/redirect/7 -o redirect.txt
+httpc post -v -h Content-Type:text/html -h Keep-Alive:10 -h Accept-language:en http://httpbin.org/redirect/7 -o redirectpost.txt
