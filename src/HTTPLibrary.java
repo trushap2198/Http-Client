@@ -7,7 +7,7 @@ public class HTTPLibrary {
 
         String[] argumentTokens = input.split(" ");
         String command = argumentTokens[0];
-        if (!command.equals("httpc") || argumentTokens.length == 1 ) {
+        if (!command.equals("httpc") || argumentTokens.length == 1) {
             System.out.println("Invalid command,please try again");
             return;
         }
@@ -16,7 +16,7 @@ public class HTTPLibrary {
                 HELP.run(argumentTokens);
                 break;
             case "get":
-                GET.run(input);
+                new GET().run(input);
                 break;
             case "post":
                 POST.run(argumentTokens, input);

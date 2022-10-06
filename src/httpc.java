@@ -3,7 +3,7 @@ import java.util.*;
 
 public class httpc {
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
 
         HTTPLibrary httpLibrary = new HTTPLibrary();
 

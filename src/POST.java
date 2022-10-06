@@ -15,13 +15,14 @@ public class POST {
     private static String server;
     private static URI uri;
     private static List<String> data;
-    private static String headerInfoKeyValue="";
+    private static String headerInfoKeyValue = "";
     private static Socket socket;
-    private static String contentData="";
+    private static String contentData = "";
     private static int contentLength;
 
+
     public static void run(String[] argumentTokens, String input) throws IOException {
-       data = Arrays.asList(input.split(" "));
+        data = Arrays.asList(input.split(" "));
         if (data.contains("-f") && (data.contains("-d") || data.contains("--d"))) {
             System.out.println("Arguments invalid please enter valid arguments");
             return;
@@ -39,19 +40,15 @@ public class POST {
         request.append(r);
         request.append("Content-Length: " + contentLength);
         request.append(Constants.NEWLINE);
-        if(data.contains("-h")){
+        if (data.contains("-h")) {
             List<String> headerInfoList = new ArrayList<>();
-            for (int i = 0; i < data.size(); i++)
-            {
-                if (data.get(i).equals("-h"))
-                {
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).equals("-h")) {
                     headerInfoList.add(data.get(i + 1));
                 }
             }
-            if (!headerInfoList.isEmpty())
-            {
-                for (String headerInfo : headerInfoList)
-                {
+            if (!headerInfoList.isEmpty()) {
+                for (String headerInfo : headerInfoList) {
                     headerInfoKeyValue = headerInfo.split(":")[0] + ":" + headerInfo.split(":")[1] + Constants.NEWLINE;
                     request.append(headerInfoKeyValue);
 
@@ -61,53 +58,40 @@ public class POST {
         }
         request.append(Constants.NEWLINE);
         request.append(contentData);
-    System.out.println("Request:" + request);
-    System.out.println("-------");
+        System.out.println("Request:" + request);
+        System.out.println("-------");
         out.print(request);
         String status = in.readLine();
         String line = "";
         //String line = in.readLine();
-        if(status.split(" ")[1].startsWith("3")){
+        if (status.split(" ")[1].startsWith("3")) {
             printRedirectPOST(in);
         }
         StringBuilder output = new StringBuilder();
-        if (isVerbose)
-        {
-            while ((line = in.readLine()) != null)
-            {
-                if (writeToFile)
-                {
+        if (isVerbose) {
+            while ((line = in.readLine()) != null) {
+                if (writeToFile) {
                     output.append(line + Constants.NEWLINE);
-                }
-                else
-                {
+                } else {
                     System.out.println(line);
                 }
-                if (line.equals("}"))
-                {
+                if (line.equals("}")) {
                     break;
                 }
             }
-        }
-        else
-        {
+        } else {
             boolean isJson = false;
             while ((line = in.readLine()) != null) {
                 if (line.trim().equals("{")) {
                     isJson = true;
                 }
-                if (isJson)
-                {
-                    if (writeToFile)
-                    {
+                if (isJson) {
+                    if (writeToFile) {
                         output.append(line + Constants.NEWLINE);
-                    }
-                    else
-                    {
+                    } else {
                         System.out.println(line);
                     }
-                    if (line.equals("}"))
-                    {
+                    if (line.equals("}")) {
                         break;
                     }
                 }
@@ -125,13 +109,10 @@ public class POST {
     private static void printRedirectPOST(BufferedReader in) throws IOException {
         String location = null;
         String line = in.readLine();
-        while (line != null)
-        {
-            if (line != null)
-            {
+        while (line != null) {
+            if (line != null) {
                 System.out.println(line);
-                if (line.contains("Location"))
-                {
+                if (line.contains("Location")) {
                     location = line.substring(line.indexOf(" ") + 1);
                     System.out.println("new location: " + location);
                 }
@@ -144,7 +125,7 @@ public class POST {
     }
 
     private static void writeOutputToFile(StringBuilder output) {
-    System.out.println(writeToFile + "file set");
+        System.out.println(writeToFile + "file set");
         try {
 
             String currentDir = System.getProperty("user.dir");
@@ -162,25 +143,20 @@ public class POST {
 
     }
 
-    private static void parseInputPost(List<String> data)
-    {
-        try{
-            if (data.contains("-o"))
-            {
+    private static void parseInputPost(List<String> data) {
+        try {
+            if (data.contains("-o")) {
                 fileName = data.get(data.size() - 1);
                 System.out.println("file name:" + fileName);
                 url = data.get(data.indexOf("-o") - 1).replaceAll("\\'", "");
 
-            } else
-            {
+            } else {
                 url = data.get(data.size() - 1).replaceAll("\\'", "");
             }
             System.out.println("url POST:" + url);
-        }
-        catch (Exception e)
-        {
-                System.out.println("Please enter a valid URL");
-                return;
+        } catch (Exception e) {
+            System.out.println("Please enter a valid URL");
+            return;
         }
         try {
             uri = new URI(url);
@@ -198,26 +174,23 @@ public class POST {
 
         StringBuilder readData = new StringBuilder("");
 
-        if (data.contains("--d") || data.contains("-d"))
-        {
+        if (data.contains("--d") || data.contains("-d")) {
             contentData = "";
-            for(int i = 0; i<data.size(); i++)
-            {
-                if (data.get(i).equals("-d") || data.get(i).equals("--d")){
-                    String content = data.get(i+1);
-          System.out.println("Content:" + content);
-                    if (content.contains("{")){
-                        contentData+=data.get(i+1).replaceAll("\\'", "");
-                    }
-                    else if (content.contains("=")){
-                        if(content.contains("&")){
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).equals("-d") || data.get(i).equals("--d")) {
+                    String content = data.get(i + 1);
+                    System.out.println("Content:" + content);
+                    if (content.contains("{")) {
+                        contentData += data.get(i + 1).replaceAll("\\'", "");
+                    } else if (content.contains("=")) {
+                        if (content.contains("&")) {
                             String datas[] = content.split("&");
                             contentData = "{";
-                            for(String val : datas){
+                            for (String val : datas) {
                                 String[] headers = val.split("=");
-                                contentData+= headers[0]+ headers[1];
+                                contentData += headers[0] + headers[1];
                             }
-                            contentData+="}";
+                            contentData += "}";
                         }
                     }
                 }
@@ -225,30 +198,24 @@ public class POST {
 //            contentData = data.get((data.contains("-d") ? data.indexOf("-d") : data.indexOf("--d") )+1);
             System.out.println("Inline data:" + contentData);
 //            contentData = input.substring(input.indexOf("{", input.indexOf("-d")), input.indexOf("}") + 1);
-           contentLength = contentData.length();
-        }
-        else
-        {
+            contentLength = contentData.length();
+        } else {
 
-            if(data.contains("-f"))
-            {
+            if (data.contains("-f")) {
                 contentData = "";
-                String inputLines ="";
-                try{
+                String inputLines = "";
+                try {
                     String currentDir = System.getProperty("user.dir");
                     String fileToRead = data.get(data.indexOf("-f") + 1);
                     System.out.println("File to send to the post:" + fileToRead);
                     String filePath = currentDir + "\\" + fileToRead;
                     BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
 
-                    while((inputLines = bufferedReader.readLine()) != null)
-                    {
+                    while ((inputLines = bufferedReader.readLine()) != null) {
                         readData.append(inputLines + "\n");
                     }
                     bufferedReader.close();
-                }
-                catch(IOException e)
-                {
+                } catch (IOException e) {
                     System.out.println("Error reading file named ");
                 }
                 contentData = readData.toString();
