@@ -8,20 +8,22 @@ import java.util.List;
 
 public class POST {
     private static final String USER_AGENT = "Concordia-HTTP/1.0";
-    private static boolean isVerbose = false;
-    private static boolean writeToFile = false;
-    private static String url;
-    private static String fileName;
-    private static String server;
-    private static URI uri;
-    private static List<String> data;
-    private static String headerInfoKeyValue = "";
-    private static Socket socket;
-    private static String contentData = "";
-    private static int contentLength;
+    private boolean isVerbose = false;
+    private boolean writeToFile = false;
+    private String url;
+    private String fileName;
+    private String server;
+    private URI uri;
+    private List<String> data;
+    private String headerInfoKeyValue = "";
+    private Socket socket;
+    private String contentData = "";
+    private int contentLength;
 
+    public POST() {
+    }
 
-    public static void run(String[] argumentTokens, String input) throws IOException {
+    public void run(String[] argumentTokens, String input) throws IOException {
         data = Arrays.asList(input.split(" "));
         if (data.contains("-f") && (data.contains("-d") || data.contains("--d"))) {
             System.out.println("Arguments invalid please enter valid arguments");
@@ -31,7 +33,7 @@ public class POST {
         getResponsePOST(url);
     }
 
-    private static void getResponsePOST(String url) throws IOException {
+    private void getResponsePOST(String url) throws IOException {
         StringBuilder request = new StringBuilder();
         socket = new Socket(server, 80);
         PrintStream out = new PrintStream(socket.getOutputStream());
@@ -106,7 +108,7 @@ public class POST {
         socket.close();
     }
 
-    private static void printRedirectPOST(BufferedReader in) throws IOException {
+    private void printRedirectPOST(BufferedReader in) throws IOException {
         String location = null;
         String line = in.readLine();
         while (line != null) {
@@ -124,7 +126,7 @@ public class POST {
         getResponsePOST(location);
     }
 
-    private static void writeOutputToFile(StringBuilder output) {
+    private void writeOutputToFile(StringBuilder output) {
         System.out.println(writeToFile + "file set");
         try {
 
@@ -143,7 +145,7 @@ public class POST {
 
     }
 
-    private static void parseInputPost(List<String> data) {
+    private void parseInputPost(List<String> data) {
         try {
             if (data.contains("-o")) {
                 fileName = data.get(data.size() - 1);

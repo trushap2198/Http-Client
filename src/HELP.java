@@ -1,6 +1,6 @@
 public class HELP {
 
-    public static void run(String[] argumentTokens) {
+    public void run(String[] argumentTokens) {
         if (argumentTokens[1].equals("help")) {
             if (argumentTokens.length == 2)
                 displayHelp();
@@ -16,7 +16,7 @@ public class HELP {
         }
     }
 
-    private static void displayHelp() {
+    private void displayHelp() {
         System.out.println("httpc is a curl-like application but supports HTTP protocol only. \n" +
                 "Usage: \n " +
                 "\t httpc command [arguments] \n " +
@@ -27,7 +27,7 @@ public class HELP {
                 "Use \"httpc help [command]\" for more information about a command.");
     }
 
-    private static void displayGET() {
+    private void displayGET() {
         System.out.println("usage: httpc get [-v] [-h key:value] URL \n\n" +
                 "Get executes a HTTP GET request for a given URL.\n\n " +
                 "\t-v\t\t\t\tPrints the detail of the response such as protocol, status,\n" +
@@ -37,7 +37,7 @@ public class HELP {
 
     }
 
-    private static void displayPOST() {
+    private void displayPOST() {
         System.out.println("usage: httpc post [-v] [-h key:value] [-d inline-data] [-f file] URL \n\n" +
                 "Post executes a HTTP POST request for a given URL with inline data or from\n" +
                 "file.\n\n " +

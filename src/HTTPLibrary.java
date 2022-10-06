@@ -13,13 +13,13 @@ public class HTTPLibrary {
         }
         switch (argumentTokens[1]) {
             case "help":
-                HELP.run(argumentTokens);
+                new HELP().run(argumentTokens);
                 break;
             case "get":
                 new GET().run(input);
                 break;
             case "post":
-                POST.run(argumentTokens, input);
+                new POST().run(argumentTokens, input);
                 break;
             default:
                 System.out.println("Invalid arguments,please try again");
