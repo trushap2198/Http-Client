@@ -12,4 +12,5 @@ Trusha Patel - 40192614
 
 //Bugs: 
 1- set isVerbose and writeToFile to false after every command - done
-2- print status after response - done, check for file
+2- print status after response - done, check for file -- under progress
+
