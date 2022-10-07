@@ -19,7 +19,7 @@ public class HTTPLibrary {
                 new GET().run(input);
                 break;
             case "post":
-                new POST().run(argumentTokens, input);
+                new POST().run(input);
                 break;
             default:
                 System.out.println("Invalid arguments,please try again");
