@@ -3,9 +3,10 @@ Java implementation of cURL command
 
 COMP 6461 - Assignment 1
 
+Ashwin Raghunath - 40192120
 Trusha Patel - 40192614
 
-Ashwin Raghunath - 40192120
+
 
 
 //Bugs: 
