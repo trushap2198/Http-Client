@@ -84,7 +84,6 @@ public class POST {
         }
       }
     } else {
-      System.out.println("in here");
       boolean isJson = false;
       while ((line = in.readLine()) != null) {
         if (line.trim().equals("{")) {
@@ -170,16 +169,18 @@ public class POST {
       for (int i = 0; i < data.size(); i++) {
         if (data.get(i).equals("-d") || data.get(i).equals("--d")) {
           String content = data.get(i + 1);
-          System.out.println("Content:" + content);
+          //System.out.println("Content:" + content);
           if (content.contains("{")) {
+            content = content + data.get(i+2);
+            //System.out.println("Content2:" + content);
             String datas[] = content.replaceAll("[\\'\\{\\}]", "").split(",");
             contentData = "{";
             for (int j = 0; j < datas.length - 1; j++) {
               String vals[] = datas[j].split(":");
-              contentData += "\"" + vals[0] + "\": \"" + vals[1] + "\",";
+              contentData +=  vals[0] + ": \"" + vals[1] + "\",";
             }
             String vals[] = datas[datas.length - 1].split(":");
-            contentData += "\"" + vals[0] + "\": \"" + vals[1] + "\"}";
+            contentData += vals[0] + ": \"" + vals[1] + "\"}";
           } else if (content.contains("=")) {
             if (content.contains("&")) {
               String datas[] = content.split("&");
@@ -200,7 +201,8 @@ public class POST {
       System.out.println("Inline data:" + contentData);
       contentLength = contentData.length();
 
-    } else {
+    }
+    else {
 
       if (data.contains("-f")) {
         contentData = "";

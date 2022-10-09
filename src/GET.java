@@ -84,19 +84,7 @@ public class GET {
                     } else {
                         System.out.println(line);
                     }
-//                    if (line.equals("}")) {
-//                        break;
-//                    }
                 }
-
-                //here
-//                else{
-//                    if (writeToFile) {
-//                        output.append(line + Constants.NEWLINE);
-//                    } else {
-//                        System.out.println(line);
-//                    }
-//                }
             }
         }
         if (writeToFile) {
