@@ -22,7 +22,7 @@ public class POST {
 
   public POST() {}
 
-  public void run(String input) throws IOException {
+  public void run( String input) throws IOException {
     data = Arrays.asList(input.split(" "));
     if (data.contains("-f") && (data.contains("-d") || data.contains("--d"))) {
       System.out.println("Arguments invalid please enter valid arguments");
@@ -58,8 +58,10 @@ public class POST {
       }
     }
     request.append(Constants.NEWLINE);
+    request.append(contentData);
     System.out.println("Request:" + request);
     System.out.println("-------");
+    System.out.println("what here");
     out.print(request);
     String status = in.readLine();
     String line = "";
@@ -80,6 +82,7 @@ public class POST {
         }
       }
     } else {
+      System.out.println("in here");
       boolean isJson = false;
       while ((line = in.readLine()) != null) {
         if (line.trim().equals("{")) {
@@ -93,6 +96,13 @@ public class POST {
           }
           if (line.equals("}")) {
             break;
+          }
+        }
+        else{
+          if (writeToFile) {
+            output.append(line + Constants.NEWLINE);
+          } else {
+            System.out.println(line);
           }
         }
       }
@@ -202,11 +212,7 @@ public class POST {
           }
         }
       }
-      //            contentData = data.get((data.contains("-d") ? data.indexOf("-d") :
-      // data.indexOf("--d") )+1);
       System.out.println("Inline data:" + contentData);
-      //            contentData = input.substring(input.indexOf("{", input.indexOf("-d")),
-      // input.indexOf("}") + 1);
       contentLength = contentData.length();
 
     } else {

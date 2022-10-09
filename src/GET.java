@@ -86,6 +86,13 @@ public class GET {
                         break;
                     }
                 }
+                else{
+                    if (writeToFile) {
+                        output.append(line + Constants.NEWLINE);
+                    } else {
+                        System.out.println(line);
+                    }
+                }
             }
         }
         if (writeToFile) {
