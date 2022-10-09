@@ -8,8 +8,8 @@ import java.util.List;
 
 public class POST {
   private static final String USER_AGENT = "Concordia-HTTP/1.0";
-  private boolean isVerbose = false;
-  private boolean writeToFile = false;
+  private boolean isVerbose;
+  private boolean writeToFile;
   private String url;
   private String fileName;
   private String server;
@@ -20,7 +20,10 @@ public class POST {
   private String contentData = "";
   private int contentLength;
 
-  public POST() {}
+  public POST() {
+    isVerbose = false;
+    writeToFile = false;
+  }
 
   public void run( String input) throws IOException {
     data = Arrays.asList(input.split(" "));
@@ -61,7 +64,6 @@ public class POST {
     request.append(contentData);
     System.out.println("Request:" + request);
     System.out.println("-------");
-    System.out.println("what here");
     out.print(request);
     String status = in.readLine();
     String line = "";
@@ -109,7 +111,7 @@ public class POST {
     }
 
     if (writeToFile) {
-      writeOutputToFile(output);
+      FileUtility.writeOutputToFile(output,fileName);
     }
     in.close();
     out.close();
@@ -134,23 +136,6 @@ public class POST {
     getResponsePOST(location);
   }
 
-  private void writeOutputToFile(StringBuilder output) {
-    System.out.println(writeToFile + "file set");
-    try {
-
-      String currentDir = System.getProperty("user.dir");
-      String filePath = currentDir + "\\" + fileName;
-
-      FileWriter fileWriter = new FileWriter(filePath, false);
-      fileWriter.write(output.toString());
-      fileWriter.close();
-    } catch (IOException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
-    }
-    System.out.println("Data written to File Successfully");
-    writeToFile = false;
-  }
 
   private void parseInputPost(List<String> data) {
     try {
@@ -224,7 +209,7 @@ public class POST {
           String currentDir = System.getProperty("user.dir");
           String fileToRead = data.get(data.indexOf("-f") + 1);
           System.out.println("File to send to the post:" + fileToRead);
-          String filePath = currentDir + "\\" + fileToRead;
+          String filePath = currentDir + "/" + fileToRead;
           BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
 
           while ((inputLines = bufferedReader.readLine()) != null) {

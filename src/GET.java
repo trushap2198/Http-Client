@@ -10,8 +10,8 @@ public class GET {
 
     private static final String USER_AGENT = "Concordia-HTTP/1.0";
 
-    private boolean isVerbose = false;
-    private boolean writeToFile = false;
+    private boolean isVerbose;
+    private boolean writeToFile;
     private String url;
     private String fileName;
     private String server;
@@ -21,6 +21,8 @@ public class GET {
     private Socket socket;
 
     public GET() {
+        isVerbose = false;
+        writeToFile = false;
     }
 
     public void run(String input) throws IOException {
@@ -86,37 +88,22 @@ public class GET {
                         break;
                     }
                 }
-                else{
-                    if (writeToFile) {
-                        output.append(line + Constants.NEWLINE);
-                    } else {
-                        System.out.println(line);
-                    }
-                }
+//                else{
+//                    if (writeToFile) {
+//                        output.append(line + Constants.NEWLINE);
+//                    } else {
+//                        System.out.println(line);
+//                    }
+//                }
             }
         }
         if (writeToFile) {
-            writeOutputToFile(output);
+            FileUtility.writeOutputToFile(output,fileName);
         }
 
         in.close();
         out.close();
         socket.close();
-    }
-
-    private void writeOutputToFile(StringBuilder output) {
-        try {
-            String currentDir = System.getProperty("user.dir");
-            String filePath = currentDir + "\\" + fileName;
-            FileWriter fileWriter = new FileWriter(filePath, false);
-            fileWriter.write(output.toString());
-            fileWriter.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        System.out.println("Data written to File Successfully");
-        writeToFile = false;
     }
 
     public void parseInput(List<String> data) {
