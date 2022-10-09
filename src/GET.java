@@ -73,21 +73,23 @@ public class GET {
                 line = in.readLine();
             }
         } else {
-            boolean isJson = false;
+            boolean isBody = false;
             while ((line = in.readLine()) != null) {
-                if (line.trim().equals("{")) {
-                    isJson = true;
+                if (line.trim().equals("")) {
+                    isBody = true;
                 }
-                if (isJson) {
+                if (isBody) {
                     if (writeToFile) {
                         output.append(line + Constants.NEWLINE);
                     } else {
                         System.out.println(line);
                     }
-                    if (line.equals("}")) {
-                        break;
-                    }
+//                    if (line.equals("}")) {
+//                        break;
+//                    }
                 }
+
+                //here
 //                else{
 //                    if (writeToFile) {
 //                        output.append(line + Constants.NEWLINE);
