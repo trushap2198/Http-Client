@@ -185,6 +185,21 @@ public class POST {
             String vals[] = datas[datas.length - 1].split(":");
             contentData += vals[0] + ": \"" + vals[1] + "\"}";
           }
+          else if (content.contains("=")) {
+            if (content.contains("&")) {
+              String datas[] = content.split("&");
+              contentData = "{";
+              for (int j = 0; j < datas.length - 1; j++) {
+                String vals[] = datas[j].split(":");
+                contentData += "\"" + vals[0] + "\": \" " + vals[1] + "\",";
+              }
+              String vals[] = datas[datas.length - 1].split(":");
+              contentData += "\"" + vals[0] + "\": \" " + vals[1] + "\"}";
+            } else {
+              String datas[] = content.split("=");
+              contentData = "{\"" + datas[0] + "\":\"" + datas[1] + "\"}";
+            }
+          }
         }
 
       }
