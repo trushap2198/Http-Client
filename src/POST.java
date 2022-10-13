@@ -62,8 +62,6 @@ public class POST {
     }
     request.append(Constants.NEWLINE);
     request.append(contentData);
-    System.out.println("Request:" + request);
-    System.out.println("-------");
     out.print(request);
     String status = in.readLine();
     String line = "";
@@ -177,7 +175,6 @@ public class POST {
               if (data.get(j).contains("}"))
                 break;
             }
-            System.out.println("Content:" + content);
             i = j - 1;
             String datas[] = content.replaceAll("[\\'\\{\\}]", "").split(",");
             contentData = "{";
@@ -191,7 +188,6 @@ public class POST {
         }
 
       }
-      System.out.println("Inline data:" + contentData);
       contentLength = contentData.length();
 
     }
