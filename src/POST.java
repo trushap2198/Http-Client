@@ -41,7 +41,7 @@ public class POST {
     PrintStream out = new PrintStream(socket.getOutputStream());
     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     String r =
-        "POST " + url + " HTTP/1.0 " + Constants.NEWLINE + "Host: " + server + Constants.NEWLINE;
+        "POST " + url + " HTTP/1.0" + Constants.NEWLINE + "Host: " + server + Constants.NEWLINE;
     request.append(r);
     request.append("Content-Length: " + contentLength);
     request.append(Constants.NEWLINE);
@@ -167,36 +167,29 @@ public class POST {
     if (data.contains("--d") || data.contains("-d")) {
       contentData = "";
       for (int i = 0; i < data.size(); i++) {
+
         if (data.get(i).equals("-d") || data.get(i).equals("--d")) {
-          String content = data.get(i + 1);
-          //System.out.println("Content:" + content);
-          if (content.contains("{")) {
-            content = content + data.get(i+2);
-            //System.out.println("Content2:" + content);
+          String content = "";
+          if (data.get(i + 1).contains("{")) {
+            int j;
+            for (j = i + 1; j < data.size(); j++) {
+              content += data.get(j);
+              if (data.get(j).contains("}"))
+                break;
+            }
+            System.out.println("Content:" + content);
+            i = j - 1;
             String datas[] = content.replaceAll("[\\'\\{\\}]", "").split(",");
             contentData = "{";
-            for (int j = 0; j < datas.length - 1; j++) {
+            for (j = 0; j < datas.length - 1; j++) {
               String vals[] = datas[j].split(":");
-              contentData +=  vals[0] + ": \"" + vals[1] + "\",";
+              contentData += vals[0] + ": \"" + vals[1] + "\",";
             }
             String vals[] = datas[datas.length - 1].split(":");
             contentData += vals[0] + ": \"" + vals[1] + "\"}";
-          } else if (content.contains("=")) {
-            if (content.contains("&")) {
-              String datas[] = content.split("&");
-              contentData = "{";
-              for (int j = 0; j < datas.length - 1; j++) {
-                String vals[] = datas[j].split(":");
-                contentData += "\"" + vals[0] + "\": \" " + vals[1] + "\",";
-              }
-              String vals[] = datas[datas.length - 1].split(":");
-              contentData += "\"" + vals[0] + "\": \" " + vals[1] + "\"}";
-            } else {
-              String datas[] = content.split("=");
-              contentData = "{\"" + datas[0] + "\":\"" + datas[1] + "\"}";
-            }
           }
         }
+
       }
       System.out.println("Inline data:" + contentData);
       contentLength = contentData.length();

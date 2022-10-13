@@ -46,7 +46,7 @@ public class GET {
         // text with methods like println().
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         StringBuilder request = new StringBuilder();
-        String r = "GET " + url + " HTTP/1.0 ";
+        String r = "GET " + url + " HTTP/1.0";
         request.append(r);
         request.append(Constants.NEWLINE);
         request.append(headerInfoKeyValue);
