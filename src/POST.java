@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class to describe the Post request and response from the URL.
+ */
+
 public class POST {
-  private static final String USER_AGENT = "Concordia-HTTP/1.0";
+  //private static final String USER_AGENT = "Concordia-HTTP/1.0";
   private boolean isVerbose;
   private boolean writeToFile;
   private String url;
@@ -20,10 +24,19 @@ public class POST {
   private String contentData = "";
   private int contentLength;
 
+  /**
+   * Construtor for the post
+   */
   public POST() {
     isVerbose = false;
     writeToFile = false;
   }
+
+  /**
+   * Function to run the post command as soon as it receives the string input from the terminal
+   * @param input String input (request) from the user
+   * @throws IOException
+   */
 
   public void run( String input) throws IOException {
     data = Arrays.asList(input.split(" "));
@@ -34,6 +47,12 @@ public class POST {
     parseInputPost(data);
     getResponsePOST(url);
   }
+
+  /**
+   * Function to fetch the response from the server
+   * @param url String url of the server
+   * @throws IOException
+   */
 
   private void getResponsePOST(String url) throws IOException {
     StringBuilder request = new StringBuilder();
@@ -115,6 +134,11 @@ public class POST {
     socket.close();
   }
 
+  /**
+   * Get the redirect location for the POST query.
+   * @param in Input stream reader that contains the redirect url information
+   * @throws IOException
+   */
   private void printRedirectPOST(BufferedReader in) throws IOException {
     String location = null;
     String line = in.readLine();
@@ -133,6 +157,10 @@ public class POST {
     getResponsePOST(location);
   }
 
+  /**
+   * Make the POST request from the String input received from the user
+   * @param data User data
+   */
 
   private void parseInputPost(List<String> data) {
     try {
@@ -185,19 +213,20 @@ public class POST {
             String vals[] = datas[datas.length - 1].split(":");
             contentData += vals[0] + ": \"" + vals[1] + "\"}";
           }
-          else if (content.contains("=")) {
-            if (content.contains("&")) {
-              String datas[] = content.split("&");
+          else if (data.get(i + 1).contains("=")) {
+            if (data.get(i + 1).contains("&")) {
+              String datas[] = data.get(i + 1).split("&");
               contentData = "{";
               for (int j = 0; j < datas.length - 1; j++) {
                 String vals[] = datas[j].split(":");
                 contentData += "\"" + vals[0] + "\": \" " + vals[1] + "\",";
               }
               String vals[] = datas[datas.length - 1].split(":");
-              contentData += "\"" + vals[0] + "\": \" " + vals[1] + "\"}";
-            } else {
-              String datas[] = content.split("=");
-              contentData = "{\"" + datas[0] + "\":\"" + datas[1] + "\"}";
+              contentData += "\"" + vals[0] + "\": \"" + vals[1] + "\"}";
+            }
+            else {
+              String datas[] = data.get(i + 1).split("=");
+              contentData = "{\"" + datas[0] + "\": \"" + datas[1] + "\"}";
             }
           }
         }

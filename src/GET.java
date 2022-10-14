@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class for GET request
+ */
+
 public class GET {
 
     private static final String USER_AGENT = "Concordia-HTTP/1.0";
@@ -20,11 +24,19 @@ public class GET {
     private String headerInfoKeyValue = "";
     private Socket socket;
 
+    /**
+     * Get request default constructor
+     */
     public GET() {
         isVerbose = false;
         writeToFile = false;
     }
 
+    /**
+     * Function to execute as soon as the get request arrives from the client
+     * @param input String input from the user
+     * @throws IOException
+     */
     public void run(String input) throws IOException {
         data = Arrays.asList(input.split(" "));
 
@@ -39,6 +51,12 @@ public class GET {
         getResponse(url);
 
     }
+
+    /**
+     * Create the response for the user
+     * @param url String url of the server
+     * @throws IOException
+     */
 
     public void getResponse(String url) throws IOException {
         socket = new Socket(server, 80);
@@ -96,6 +114,10 @@ public class GET {
         socket.close();
     }
 
+    /**
+     * Parse the user input to pass it as a request to the server socket. Accounting for the options and values passed as the arguments.
+     * @param data String input from the user
+     */
     public void parseInput(List<String> data) {
         try {
             if (data.contains("-o")) {
@@ -135,7 +157,13 @@ public class GET {
         headerInfoKeyValue += "User-Agent:" + USER_AGENT;
     }
 
-    private void printRedirect(BufferedReader in) throws IOException {
+  /**
+   * Get the redirect location for the GET query.
+   *
+   * @param in Input stream reader that contains the * redirect url information contains the
+   * @throws IOException
+   */
+  private void printRedirect(BufferedReader in) throws IOException {
         String location = null;
         String line = in.readLine();
         while (line != null) {

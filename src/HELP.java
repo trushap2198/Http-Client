@@ -1,4 +1,12 @@
+/**
+ * Class to describe the help option form the user input
+ */
+
 public class HELP {
+    /**
+     * Function to execute the help request for GET and POST
+     * @param argumentTokens
+     */
 
     public void run(String[] argumentTokens) {
         if (argumentTokens[1].equals("help")) {
@@ -16,6 +24,10 @@ public class HELP {
         }
     }
 
+    /**
+     * Display general help output for the request of form "httpc help"
+     */
+
     private void displayHelp() {
         System.out.println("httpc is a curl-like application but supports HTTP protocol only. \n" +
                 "Usage: \n " +
@@ -27,6 +39,10 @@ public class HELP {
                 "Use \"httpc help [command]\" for more information about a command.");
     }
 
+    /**
+     * Display information for GET request, i.e., "httpc get help"
+     */
+
     private void displayGET() {
         System.out.println("usage: httpc get [-v] [-h key:value] URL \n\n" +
                 "Get executes a HTTP GET request for a given URL.\n\n " +
@@ -37,6 +53,9 @@ public class HELP {
 
     }
 
+    /**
+     *  Display information for POST request, i.e., "httpc post help"
+     */
     private void displayPOST() {
         System.out.println("usage: httpc post [-v] [-h key:value] [-d inline-data] [-f file] URL \n\n" +
                 "Post executes a HTTP POST request for a given URL with inline data or from\n" +

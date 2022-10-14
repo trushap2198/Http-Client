@@ -1,6 +1,9 @@
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Class to write the output to file
+ */
 public class FileUtility {
 
     public static void writeOutputToFile(StringBuilder output,String fileName) {

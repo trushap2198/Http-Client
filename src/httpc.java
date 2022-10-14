@@ -1,6 +1,9 @@
 import java.io.*;
 import java.util.*;
 
+/**
+ * The driver code that executes the whole application
+ */
 public class httpc {
 
     public static void main(String[] args) throws IOException {

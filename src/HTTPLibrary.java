@@ -1,5 +1,8 @@
 import java.io.IOException;
 
+/**
+ * Helper class for the application execution which parse the user input based on "help", "get" or  "post" request
+ */
 public class HTTPLibrary {
 
 
