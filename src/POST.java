@@ -116,13 +116,13 @@ public class POST {
             break;
           }
         }
-        else{
-          if (writeToFile) {
-            output.append(line + Constants.NEWLINE);
-          } else {
-            System.out.println(line);
-          }
-        }
+//        else{
+//          if (writeToFile) {
+//            output.append(line + Constants.NEWLINE);
+//          } else {
+//            System.out.println(line);
+//          }
+//        }
       }
     }
 
