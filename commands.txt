@@ -16,4 +16,12 @@ Bonus:
 httpc get -v 'http://httpbin.org/get?course=networking&assignment=1' -o hello.txt
 
 //redirect
+httpc get -v -h Content-Type:text/html -h Accept-language:en http://httpbin.org/redirect/7
 httpc get -v 'http://google.com'
+
+
+//covers all
+httpc get -v 'http://httpbin.org/get?course=networking&assignment=1' -o hello.txt
+httpc get -v -h Content-Type:text/html -h Accept-language:en http://httpbin.org/redirect/7
+httpc post -h Content-Type:application/json --d '{"Assignment": 1}' http://httpbin.org/post
+httpc post -v -f inputfFile.json http://httpbin.org/post
