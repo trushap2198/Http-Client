@@ -90,6 +90,7 @@ public class POST {
     }
     StringBuilder output = new StringBuilder();
     if (isVerbose) {
+      System.out.println(status);
       while ((line = in.readLine()) != null) {
         if (writeToFile) {
           output.append(line + Constants.NEWLINE);
