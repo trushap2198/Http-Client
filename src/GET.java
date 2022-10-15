@@ -72,12 +72,13 @@ public class GET {
         out.println();
         String line = in.readLine();
         String status = line;
+        StringBuilder output = new StringBuilder();
 
         if (status.split(" ")[1].startsWith("3")) {
+            System.out.println(status);
             printRedirect(in);
         }
-        StringBuilder output = new StringBuilder();
-        if (isVerbose) {
+        else if (isVerbose) {
 
             while (line != null) {
 
