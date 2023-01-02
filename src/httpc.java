@@ -16,13 +16,15 @@ public class httpc {
         do {
             System.out.println("Enter Command or Enter 'exit' to exit from the system");
             Scanner scan = new Scanner(System.in);
-            input = scan.nextLine();
+            while (scan.hasNextLine()){
+                input = scan.nextLine();
             if (input.equals("exit")) {
                 return;
             } else {
                 httpLibrary.runCommand(input);
             }
             System.out.println("------------------------------------------------------------------------");
+        }
         } while (true);
     }
 
