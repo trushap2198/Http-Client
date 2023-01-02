@@ -4,25 +4,24 @@ Java implementation of cURL command
 COMP 6461 - Httpc-Client
 
 
-Pull the repository and open the command prompt in the directory of the folder
+Pull the repository and open the command prompt in the src directory
 
-## To load the docker image:
+## To build the docker image:
 ```
-docker load -i httpc_docker_image.tar
-
+docker build -t httpc_image:v1 .
 ```
 
 ## To run the docker container
 
 ```
-docker run -i -t http_image:v1
+docker run -i -t --name:http_container http_image:v1
 
 ```
 
 ## To start the container
 
 ```
-docker start -i <container>
+docker start -i http_container
 
 ```
 
@@ -31,13 +30,5 @@ Press "exit" to terminate the container.
 Commands for the client are in the file "commands.txt"
 Use this commands once the welcome message is displayed
 
-
-
-Created By:
-
-
-Ashwin Raghunath - 40192120
-
-Trusha Patel - 40192614
 
 
