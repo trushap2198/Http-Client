@@ -6,19 +6,15 @@ COMP 6461 - Httpc-Client
 
 Pull the repository and open the command prompt in the src directory
 
-## To build the docker image:
-```
-docker build -t httpc_image:v1 .
-```
 
-## To run the docker container
+## To pull the image and run the docker container (only if the container does not exist, otherwise use the start command below)
 
 ```
-docker run -i -t --name:http_container http_image:v1
+docker run -i -t --name:http_container trusha2198/http_image:v1
 
 ```
 
-## To start the container
+## To start the container (skip if run executed)
 
 ```
 docker start -i http_container
